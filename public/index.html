@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo-App</title>
+    <style>
+        body{
+            background-color: rgb(32, 16, 48);
+        }
+        .button{
+            height: 10vh;
+            width: 40%;
+            font-size: 50px;
+            background-color: whitesmoke;
+            border-radius: 50px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .input{
+            height: 10vh;
+            width: 90%;
+            font-size: 50px;
+
+        }
+    </style>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+<body>
+    <div id="alp">
+        <center>
+            <div style="height:fit-content;width: 30%;margin: 10%;box-shadow: 0px 0px 60px rgb(11, 124, 205); border-radius: 50px;" id="container">
+                <h1 style="font-size: 60px;color: azure; margin: 10px;">Todo</h1>
+                <div>
+                    <input id="user" type="text" placeholder="Username" class="input" style="margin: 30px;">
+                </div>
+                <div>
+                    <input id="password" type="password" placeholder="Password" class="input" style="margin: 30px;">
+                </div>
+                <button class="button" onclick="signin()">SignIn</button>
+                <button class="button" onclick="signup()">signUp</button>
+            </div>
+        </center>
+
+    </div>
+    
+    <script >
+        async function signup(){
+        const res = await axios.post('http://localhost:3000/signup',{
+            username:document.querySelector('#user').value,
+            password:document.querySelector('#password').value
+        })
+        console.log(res);
+        alert(res.data.msg);
+    }
+    
+    async function signin(){
+        const res1 = await axios.post('http://localhost:3000/signin',{
+            username:document.querySelector('#user').value,
+            password:document.querySelector('#password').value
+        })
+        if(res1.request.status === 200){
+            localStorage.setItem('token',res1.data.token);
+            alert(res1.data.msg);
+            const res = await axios.post('http://localhost:3000/todo',{
+                "token":localStorage.getItem('token')
+            });
+            document.querySelector('#alp').innerHTML="";
+            document.querySelector('#alp').innerHTML=res.data
+            document.querySelector('#user1').innerHTML="Welcome "+ res.headers.username+" !!!"; 
+            
+            console.log(res)
+        }
+        else{
+            return;
+        }
+
+        
+    }
+    let j=0;
+        async function add(){
+            const res = await axios.post('http://localhost:3000/Todo-add',{
+                "token":localStorage.getItem('token'),
+                Todo:{
+                    data:document.querySelector('#Todo1').value,
+                    id:j++
+
+                }
+            })
+            
+            const res1 = await axios.post('http://localhost:3000/Todo-get',{
+                "token":localStorage.getItem('token')
+            });
+            alert('Todo added');
+            console.log(res1);
+            render(res1.data);
+
+        }
+        function render(Todo){
+            document.querySelector('#Todo').innerHTML="";
+            const divEl = document.createElement('div');
+            const T = Todo.Todo;
+            for(let i=0;i<T.length;i++){
+                console.log(T[i]);
+                const divEl1 = document.createElement('div');
+                divEl1.innerHTML=`            <div id=del${T[i].id} style="display: flex;">
+                <div class="input" style="background-color:azure; margin:30px">
+                    ${T[i].data}
+                </div>
+                <button class="button" onclick="del(${T[i].id})">delete</button>
+
+                </div>`;
+                divEl.appendChild(divEl1);
+
+            }
+            document.querySelector('#Todo').appendChild(divEl);
+
+        }
+        function logout(){
+            localStorage.clear();
+            location.reload();
+        }
+        function del(a){
+            document.querySelector(`#del${a}`).innerHTML="";
+        }
+    </script>
+    
+    
+</body>
+</html>

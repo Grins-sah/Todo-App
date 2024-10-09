@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
+    <style>
+        body{
+            background-color: rgb(32, 16, 48);
+        }
+        .button{
+            height: 7vh;
+            width: 40%;
+            font-size: 50px;
+            background-color: whitesmoke;
+            border-radius: 50px;
+            margin: 10px;
+            cursor: pointer;
+            margin: 30px;
+        }
+        .input{
+            height: 7vh;
+            width: 90%;
+            font-size: 50px;
+
+        }
+    </style>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+<body>
+    <span id="user1" style="color: azure;"></span>
+    <center>
+        <div style="height:fit-content;width: 50%;margin: 10%;box-shadow: 0px 0px 60px rgb(11, 124, 205); border-radius: 50px;">
+            <h1 style="font-size: 60px;color: azure; margin: 10px;">Todo</h1>
+            <div style="display: flex;" id="Todo">
+                <div>
+                    <input id="Todo" type="text" placeholder="Enter Todo" class="input" style="margin: 30px;">
+                </div>
+                <button class="button" onclick="add()">Add</button>
+
+            </div>
+            <div style="display: flex;">
+                <div class="input" style="background-color:azure; margin:30px">
+                    kjnkjnkjkjbjbkjbkjbkbj
+                </div>
+                <button class="button" onclick="del()">delete</button>
+
+            </div>
+            <button class="button" onclick="logout()">Log Out</button>
+        </div>
+    </center>
+    <script>
+        async function Add(){
+            const res = await axios.post('http://localhost:3000/Todo-add',{
+                "token":localStorage.getItem('token'),
+                data:document.querySelector('#Todo').value
+            })
+            
+            const res1 = await axios.post('http://localhost:3000/Todo-get',{
+                "token":localStorage.getItem('token')
+            });
+            alert('Todo added');
+            render(res1.data);
+
+        }
+        function render(Todo){
+            const divEl = document.createElement('div');
+            for(let i in Todo){
+                const divEl1 = document.createElement('div');
+                divEl1.innerHTML=`<span style="margin: 30px;" class="input"></span>`
+
+            }
+        }
+    </script>
+    
+</body>
+</html>
