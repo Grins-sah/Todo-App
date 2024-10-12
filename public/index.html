@@ -49,7 +49,7 @@
     
     <script >
         async function signup(){
-        const res = await axios.post('http://localhost:3000/signup',{
+        const res = await axios.post('/signup',{
             username:document.querySelector('#user').value,
             password:document.querySelector('#password').value
         })
@@ -58,14 +58,14 @@
     }
     
     async function signin(){
-        const res1 = await axios.post('http://localhost:3000/signin',{
+        const res1 = await axios.post('/signin',{
             username:document.querySelector('#user').value,
             password:document.querySelector('#password').value
         })
         if(res1.request.status === 200){
             localStorage.setItem('token',res1.data.token);
             alert(res1.data.msg);
-            const res = await axios.post('http://localhost:3000/todo',{
+            const res = await axios.post('/todo',{
                 "token":localStorage.getItem('token')
             });
             document.querySelector('#alp').innerHTML="";
@@ -82,7 +82,7 @@
     }
     let j=0;
         async function add(){
-            const res = await axios.post('http://localhost:3000/Todo-add',{
+            const res = await axios.post('/Todo-add',{
                 "token":localStorage.getItem('token'),
                 Todo:{
                     data:document.querySelector('#Todo1').value,
@@ -91,7 +91,7 @@
                 }
             })
             
-            const res1 = await axios.post('http://localhost:3000/Todo-get',{
+            const res1 = await axios.post('/Todo-get',{
                 "token":localStorage.getItem('token')
             });
             alert('Todo added');
