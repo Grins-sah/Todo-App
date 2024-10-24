@@ -65,7 +65,7 @@
         if(res1.request.status === 200){
             localStorage.setItem('token',res1.data.token);
             alert(res1.data.msg);
-            const res = await axios.post('/todo',{
+            const res = await axios.post('http://localhost:3000/todo',{
                 "token":localStorage.getItem('token')
             });
             document.querySelector('#alp').innerHTML="";
