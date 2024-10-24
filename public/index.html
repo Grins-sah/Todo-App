@@ -70,9 +70,11 @@
             });
             document.querySelector('#alp').innerHTML="";
             document.querySelector('#alp').innerHTML=res.data
-            document.querySelector('#user1').innerHTML="Welcome "+ res.headers.username+" !!!"; 
-            
-            console.log(res)
+            document.querySelector('#user1').innerHTML="Welcome "+ res1.data.username+" !!!"; 
+            const res2 = await axios.post('http://localhost:3000/Todo-get',{
+                "token":localStorage.getItem('token')
+            });
+            render(res2.data);
         }
         else{
             return;
