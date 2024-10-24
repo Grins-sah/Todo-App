@@ -49,7 +49,7 @@
     
     <script >
         async function signup(){
-        const res = await axios.post('/signup',{
+        const res = await axios.post('http://localhost:3000/signup',{
             username:document.querySelector('#user').value,
             password:document.querySelector('#password').value
         })
@@ -58,7 +58,7 @@
     }
     
     async function signin(){
-        const res1 = await axios.post('/signin',{
+        const res1 = await axios.post('http://localhost:3000/signin',{
             username:document.querySelector('#user').value,
             password:document.querySelector('#password').value
         })
@@ -82,7 +82,7 @@
     }
     let j=0;
         async function add(){
-            const res = await axios.post('/Todo-add',{
+            const res = await axios.post('http://localhost:3000/Todo-add',{
                 "token":localStorage.getItem('token'),
                 Todo:{
                     data:document.querySelector('#Todo1').value,
@@ -91,7 +91,7 @@
                 }
             })
             
-            const res1 = await axios.post('../Todo-get',{
+            const res1 = await axios.post('http://localhost:3000/Todo-get',{
                 "token":localStorage.getItem('token')
             });
             alert('Todo added');
